@@ -36,10 +36,9 @@ curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-
 
 echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"| tee /etc/apt/sources.list.d/brave-browser-release.list
 
-
 apt update
 
-apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser golang xfce4-genmon-plugin gimp vlc audacity bat docker docker-compose
+apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser golang xfce4-genmon-plugin gimp vlc audacity bat docker docker-compose bettercap hostapd mdk4 asleap isc-dhcp-server hostapd-wpe hcxdumptool hcxtools beef-xss lighttpd
 
 
 user=$(ls /home)
@@ -47,8 +46,6 @@ user=$(ls /home)
 log "Detected user: $user"
 
 cd "/home/$user/Pictures"
-pwd 
-
 
 if [ ! -e "wallpaper.jpg" ]; then
 	log "Downloading wallpaper..."
@@ -69,18 +66,20 @@ log "Downloading oh-my-zsh"
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
-wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/root-theme.zsh-theme -O "/root/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
+cd /tmp
+wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/root-theme.zsh-theme
+wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/user-theme.zsh-theme
 
 ln=$(grep "^ZSH_THEME" /root/.zshrc -n | cut -d ':' -f1)
 sed -i "${ln}c ZSH_THEME=\"my-custom-theme\"" /root/.zshrc
 
-
 cp -r /root/.oh-my-zsh "/home/$user/"
 cp -r /root/.zshrc "/home/$user/"
 
-rm -f "/home/$user/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
+mv "/tmp/root-theme.zsh-theme" "/root/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
+mv "/tmp/user-theme.zsh-theme" "/home/$user/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
 
-wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/user-theme.zsh-theme -O "/home/$user/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
+rm -f "/home/$user/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
 
 chown -R "$user:$user" "/home/$user/.zshrc"
 chown -R "$user:$user" "/home/$user/.oh-my-zsh"
@@ -130,7 +129,5 @@ git clone https://github.com/ropnop/kerbrute
 cd kerbrute
 go get github.com/ropnop/kerbrute
 
-
 chown -R "$user:$user" /opt/tools
-
 apt upgrade -y 
