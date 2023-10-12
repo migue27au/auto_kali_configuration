@@ -115,7 +115,7 @@ ln -s /opt/tools/ping-sweep/ping-sweep /usr/bin/ping-sweep
 
 cd /opt/tools
 
-sudo apt-get install --no-install-recommends git ca-certificates build-essential pkg-config libreadline-dev gcc-arm-none-eabi libnewlib-dev qtbase5-dev libbz2-dev liblz4-dev libbluetooth-dev libpython3-dev libssl-dev
+sudo apt-get install -y --no-install-recommends git ca-certificates build-essential pkg-config libreadline-dev gcc-arm-none-eabi libnewlib-dev qtbase5-dev libbz2-dev liblz4-dev libbluetooth-dev libpython3-dev libssl-dev
 
 git clone https://github.com/RfidResearchGroup/proxmark3
 cd proxmark3
