@@ -46,9 +46,6 @@ user=$(ls /home)
 
 log "Detected user: $user"
 
-sudo usermod -aG docker $user
-newgrp docker
-
 cd "/home/$user/Pictures"
 
 if [ ! -e "wallpaper.jpg" ]; then
@@ -135,3 +132,6 @@ go get github.com/ropnop/kerbrute
 
 chown -R "$user:$user" /opt/tools
 apt upgrade -y 
+
+usermod -aG docker $user
+newgrp docker
