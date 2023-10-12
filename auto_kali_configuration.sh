@@ -106,11 +106,10 @@ git clone https://github.com/v1s1t0r1sh3r3/airgeddon
 
 
 chmod +x /opt/tools/nmap-info/nmap-info.py
-chmod +x /opt/tools/ping-sweep/ping-sweep.py
+chmod +x /opt/tools/ping-sweep/ping-sweep
 
-ln -s /opt/tools/nmap-info/nmap-info.py nmap-info
-ln -s /opt/tools/ping-sweep/ping-sweep.py ping-sweep
-
+ln -s /opt/tools/nmap-info/nmap-info.py /usr/bin/nmap-info
+ln -s /opt/tools/ping-sweep/ping-sweep /usr/bin/ping-sweep
 
 chown -R "$user:$user" /opt/tools
 
