@@ -78,6 +78,8 @@ sed -i "${ln}c ZSH_THEME=\"my-custom-theme\"" /root/.zshrc
 cp -r /root/.oh-my-zsh "/home/$user/"
 cp -r /root/.zshrc "/home/$user/"
 
+rm -f "/home/$user/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
+
 wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/user-theme.zsh-theme -O "/home/$user/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
 
 chown -R "$user:$user" "/home/$user/.zshrc"
