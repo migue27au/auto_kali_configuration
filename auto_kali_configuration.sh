@@ -39,7 +39,7 @@ echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] http
 
 apt update
 
-apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser golang xfce4-genmon-plugin
+apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser golang xfce4-genmon-plugin gimp vlc audacity bat docker docker-compose
 
 
 user=$(ls /home)
@@ -94,7 +94,7 @@ sudo -u "$user" xfconf-query -c xfce4-keyboard-shortcuts -p '/commands/custom/<S
 
 log "downloading tools"
 
-pip install frida frida-tools objection
+pip install frida frida-tools objection uploadserver
 
 mkdir /opt/tools
 cd /opt/tools
@@ -114,6 +114,8 @@ chmod +x /opt/tools/ping-sweep/ping-sweep
 ln -s /opt/tools/nmap-info/nmap-info.py /usr/bin/nmap-info
 ln -s /opt/tools/ping-sweep/ping-sweep /usr/bin/ping-sweep
 
+cd /opt/tools
+
 sudo apt-get install --no-install-recommends git ca-certificates build-essential pkg-config libreadline-dev gcc-arm-none-eabi libnewlib-dev qtbase5-dev libbz2-dev liblz4-dev libbluetooth-dev libpython3-dev libssl-dev
 
 git clone https://github.com/RfidResearchGroup/proxmark3
@@ -127,7 +129,6 @@ cd /opt/tools
 git clone https://github.com/ropnop/kerbrute
 cd kerbrute
 go get github.com/ropnop/kerbrute
-
 
 
 chown -R "$user:$user" /opt/tools
