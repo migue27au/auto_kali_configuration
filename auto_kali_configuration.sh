@@ -15,16 +15,29 @@ if [[ $whoami != "root" ]]; then
 	exit 0
 fi
 
-log "Detected user: $whoami"
-cd /home/$whoami/Pictures
+log "APT UPDATE"
 
-if [ ! -e "wallpaper.png" ]; then
+apt update
+
+sudo apt install -y dbus-x11 xwallpaper
+
+user=$(ls /home)
+
+log "Detected user: $user"
+
+cd "/home/$user/Pictures"
+pwd 
+
+
+if [ ! -e "wallpaper.jpg" ]; then
 	log "Downloading wallpaper..."
-	wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/wallpaper.png
+	sudo -u $user wget "https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/wallpaper.jpg"
 fi
 
 log "Setting wallpaper..."
-xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/$whoami/Pictures/wallpaper.png
+
+sudo -u $user xwallpaper --zoom "/home/$user/Pictures/wallpaper.jpg"
 
 log "Changing keyboard layout to es"
-setxkbmap es
+sudo -u $user setxkbmap es
+
