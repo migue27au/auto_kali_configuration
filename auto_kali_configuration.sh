@@ -39,7 +39,7 @@ echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] http
 
 apt update
 
-apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser
+apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser golang xfce4-genmon-plugin
 
 
 user=$(ls /home)
@@ -106,7 +106,7 @@ wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download
 git clone https://github.com/migue27au/nmap-info
 git clone https://github.com/migue27au/ping-sweep
 git clone https://github.com/v1s1t0r1sh3r3/airgeddon
-
+git clone https://github.com/migue27au/toolbar_tools
 
 chmod +x /opt/tools/nmap-info/nmap-info.py
 chmod +x /opt/tools/ping-sweep/ping-sweep
@@ -114,7 +114,22 @@ chmod +x /opt/tools/ping-sweep/ping-sweep
 ln -s /opt/tools/nmap-info/nmap-info.py /usr/bin/nmap-info
 ln -s /opt/tools/ping-sweep/ping-sweep /usr/bin/ping-sweep
 
+sudo apt-get install --no-install-recommends git ca-certificates build-essential pkg-config libreadline-dev gcc-arm-none-eabi libnewlib-dev qtbase5-dev libbz2-dev liblz4-dev libbluetooth-dev libpython3-dev libssl-dev
+
+git clone https://github.com/RfidResearchGroup/proxmark3
+cd proxmark3
+
+make accessrights
+make clean && make -j
+make install
+
+cd /opt/tools
+git clone https://github.com/ropnop/kerbrute
+cd kerbrute
+go get github.com/ropnop/kerbrute
+
+
+
 chown -R "$user:$user" /opt/tools
 
 apt upgrade -y 
-reboot
