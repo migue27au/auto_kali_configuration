@@ -74,10 +74,11 @@ wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/ro
 ln=$(grep "^ZSH_THEME" /root/.zshrc -n | cut -d ':' -f1)
 sed -i "${ln}c ZSH_THEME=\"my-custom-theme\"" /root/.zshrc
 
-wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/user-theme.zsh-theme -O "/home/$user/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
 
 cp -r /root/.oh-my-zsh "/home/$user/"
 cp -r /root/.zshrc "/home/$user/"
+
+wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/user-theme.zsh-theme -O "/home/$user/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
 
 chown -R "$user:$user" "/home/$user/.zshrc"
 chown -R "$user:$user" "/home/$user/.oh-my-zsh"
@@ -113,5 +114,5 @@ ln -s /opt/tools/ping-sweep/ping-sweep /usr/bin/ping-sweep
 
 chown -R "$user:$user" /opt/tools
 
-apt upgrade -y
+apt upgrade -y 
 reboot
