@@ -16,11 +16,12 @@ if [[ $whoami != "root" ]]; then
 fi
 
 log "Detected user: $whoami"
-
-log "Downloading wallpaper..."
-
 cd /home/$whoami/Pictures
-wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/wallpaper.png
+
+if [ ! -e "wallpaper.png" ]; then
+	log "Downloading wallpaper..."
+	wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/wallpaper.png
+fi
 
 log "Setting wallpaper..."
 xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/$whoami/Pictures/wallpaper.png
