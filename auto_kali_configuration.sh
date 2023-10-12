@@ -18,7 +18,7 @@ if [[ $whoami != "root" ]]; then
 fi
 
 if [[ $password = "" ]]; then
-	log "Please provide de user password"
+	log "Please provide the user password"
 	exit 0
 fi
 
@@ -32,13 +32,15 @@ sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 
+curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"| tee /etc/apt/sources.list.d/brave-browser-release.list
+
+
 apt update
 
-apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2
+apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser
 
-systemctl start snapd
-snap install brave
-systemctl stop snapd
 
 user=$(ls /home)
 
@@ -57,15 +59,15 @@ log "enabling ssh service"
 systemctl start ssh
 
 log "Setting wallpaper..."
-sudo -u "$user" sshpass -p "$password" ssh kali@localhost -x "xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/$user/Pictures/wallpaper.jpg"
-sshpass -p "$password" ssh kali@localhost -x "xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/$user/Pictures/wallpaper.jpg"
+sudo -u "$user" sshpass -p "$password" ssh kali@localhost -o StrictHostKeyChecking=no -x "xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/$user/Pictures/wallpaper.jpg"
+sshpass -p "$password" ssh kali@localhost -o StrictHostKeyChecking=no -x "xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/$user/Pictures/wallpaper.jpg"
 
 log "disabling ssh service"
 sudo systemctl stop ssh
 
 log "Downloading oh-my-zsh"
 
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 cp -r /root/.oh-my-zsh "/home/$user/"
 cp -r /root/.zshrc "/home/$user/"
@@ -95,7 +97,7 @@ pip install frida frida-tools objection
 mkdir /opt/tools
 cd /opt/tools
 
-wget –load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget –quiet –save-cookies /tmp/cookies.txt –keep-session-cookies –no-check-certificate ‘https://docs.google.com/uc?export=download&id=1l_vCY5w-r1vHleUpqPCN0pXVZNBDpA5X‘ -O- | sed -rn ‘s/.*confirm=([0-9A-Za-z_]+).*/1n/p’)&id=1l_vCY5w-r1vHleUpqPCN0pXVZNBDpA5X" -O AD_Tools.7z && rm -rf /tmp/cookies.txt
+wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1l_vCY5w-r1vHleUpqPCN0pXVZNBDpA5X' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1l_vCY5w-r1vHleUpqPCN0pXVZNBDpA5X" -O AD_Tools.7z && rm -rf /tmp/cookies.txt
 
 7z x AD_Tools.7z -pAD_Tools
 
@@ -113,4 +115,4 @@ ln -s /opt/tools/ping-sweep/ping-sweep.py ping-sweep
 
 chown -R "$user:$user" /opt/tools
 
-apt upgrade
+apt upgrade -y
