@@ -71,11 +71,12 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 cp -r /root/.oh-my-zsh "/home/$user/"
 cp -r /root/.zshrc "/home/$user/"
-chown -R "$user:$user" "/home/$user/.zshrc"
-
 
 wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/root-theme.zsh-theme -O "/root/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
-sudo -u "$user" wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/user-theme.zsh-theme -O "/home/$user/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
+wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/user-theme.zsh-theme -O "/home/$user/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
+
+chown -R "$user:$user" "/home/$user/.zshrc"
+chown -R "$user:$user" "/home/$user/.oh-my-zsh"
 
 ln=$(grep "^ZSH_THEME" /root/.zshrc -n | cut -d ':' -f1)
 sed -i "${ln}c ZSH_THEME=\"my-custom-theme\"" /root/.zshrc
@@ -116,3 +117,4 @@ ln -s /opt/tools/ping-sweep/ping-sweep.py ping-sweep
 chown -R "$user:$user" /opt/tools
 
 apt upgrade -y
+reboot
