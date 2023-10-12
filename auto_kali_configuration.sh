@@ -69,6 +69,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 
 cd /tmp
 wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/root-theme.zsh-theme
+cd /tmp
 wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/user-theme.zsh-theme
 
 ln=$(grep "^ZSH_THEME" /root/.zshrc -n | cut -d ':' -f1)
@@ -79,8 +80,6 @@ cp -r /root/.zshrc "/home/$user/"
 
 mv "/tmp/root-theme.zsh-theme" "/root/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
 mv "/tmp/user-theme.zsh-theme" "/home/$user/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
-
-rm -f "/home/$user/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
 
 chown -R "$user:$user" "/home/$user/.zshrc"
 chown -R "$user:$user" "/home/$user/.oh-my-zsh"
