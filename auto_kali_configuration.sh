@@ -36,7 +36,6 @@ echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] http
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/docker-archive-keyring.gpg
 echo "deb [arch=amd64] https://download.docker.com/linux/debian bullseye stable" | tee  /etc/apt/sources.list.d/docker.list
 
-
 apt update
 
 apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser golang xfce4-genmon-plugin gimp vlc audacity bat docker-ce docker-ce-cli containerd.io bettercap hostapd mdk4 asleap isc-dhcp-server hostapd-wpe hcxdumptool hcxtools beef-xss lighttpd
@@ -45,6 +44,11 @@ apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg 
 user=$(ls /home)
 
 log "Detected user: $user"
+
+usermod -aG docker $user
+newgrp docker << TEST
+echo "new group docker created"
+TEST
 
 cd "/home/$user/Pictures"
 
@@ -131,6 +135,3 @@ go get github.com/ropnop/kerbrute
 
 chown -R "$user:$user" /opt/tools
 apt upgrade -y 
-
-usermod -aG docker $user
-newgrp docker
