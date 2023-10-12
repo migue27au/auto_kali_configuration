@@ -1,5 +1,7 @@
 #!/bin/bash
 
+password=$1
+
 function log {
     text=$1
     BOLDRED="\e[1;31m" # Rojo en negrita
@@ -15,11 +17,28 @@ if [[ $whoami != "root" ]]; then
 	exit 0
 fi
 
+if [[ $password = "" ]]; then
+	log "Please provide de user password"
+	exit 0
+fi
+
+
+
 log "APT UPDATE"
+
+wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 
 apt update
 
-sudo apt install -y dbus-x11 xwallpaper
+apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2
+
+systemctl start snapd
+snap install brave
+systemctl stop snapd
 
 user=$(ls /home)
 
@@ -31,13 +50,67 @@ pwd
 
 if [ ! -e "wallpaper.jpg" ]; then
 	log "Downloading wallpaper..."
-	sudo -u $user wget "https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/wallpaper.jpg"
+	sudo -u "$user" wget "https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/wallpaper.jpg"
 fi
 
-log "Setting wallpaper..."
+log "enabling ssh service"
+systemctl start ssh
 
-sudo -u $user xwallpaper --zoom "/home/$user/Pictures/wallpaper.jpg"
+log "Setting wallpaper..."
+sudo -u "$user" sshpass -p "$password" ssh kali@localhost -x "xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/$user/Pictures/wallpaper.jpg"
+sshpass -p "$password" ssh kali@localhost -x "xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/$user/Pictures/wallpaper.jpg"
+
+log "disabling ssh service"
+sudo systemctl stop ssh
+
+log "Downloading oh-my-zsh"
+
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
+
+cp -r /root/.oh-my-zsh "/home/$user/"
+cp -r /root/.zshrc "/home/$user/"
+chown -R "$user:$user" "/home/$user/.zshrc"
+
+
+wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/root-theme.zsh-theme -O "/root/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
+sudo -u "$user" wget https://raw.githubusercontent.com/migue27au/auto_kali_configuration/main/user-theme.zsh-theme -O "/home/$user/.oh-my-zsh/custom/themes/my-custom-theme.zsh-theme"
+
+ln=$(grep "^ZSH_THEME" /root/.zshrc -n | cut -d ':' -f1)
+sed -i "${ln}c ZSH_THEME=\"my-custom-theme\"" /root/.zshrc
+
+ln=$(grep "^ZSH_THEME" "/home/$user/.zshrc" -n | cut -d ':' -f1)
+sudo -u "$user" sed -i "${ln}c ZSH_THEME=\"my-custom-theme\"" "/home/$user/.zshrc"
 
 log "Changing keyboard layout to es"
-sudo -u $user setxkbmap es
+setxkbmap es
 
+log "Configuring shortcuts"
+xfconf-query -c xfce4-keyboard-shortcuts -p '/commands/custom/<Primary><Alt>t' -t string -s '/usr/bin/xfce4-terminal'
+xfconf-query -c xfce4-keyboard-shortcuts -p '/commands/custom/<Super><Shift>s' -t string -s '/usr/bin/flameshot gui'
+
+log "downloading tools"
+
+pip install frida frida-tools objection
+
+mkdir /opt/tools
+cd /opt/tools
+
+wget –load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget –quiet –save-cookies /tmp/cookies.txt –keep-session-cookies –no-check-certificate ‘https://docs.google.com/uc?export=download&id=1l_vCY5w-r1vHleUpqPCN0pXVZNBDpA5X‘ -O- | sed -rn ‘s/.*confirm=([0-9A-Za-z_]+).*/1n/p’)&id=1l_vCY5w-r1vHleUpqPCN0pXVZNBDpA5X" -O AD_Tools.7z && rm -rf /tmp/cookies.txt
+
+7z x AD_Tools.7z -pAD_Tools
+
+git clone https://github.com/migue27au/nmap-info
+git clone https://github.com/migue27au/ping-sweep
+git clone https://github.com/v1s1t0r1sh3r3/airgeddon
+
+
+chmod +x /opt/tools/nmap-info/nmap-info.py
+chmod +x /opt/tools/ping-sweep/ping-sweep.py
+
+ln -s /opt/tools/nmap-info/nmap-info.py nmap-info
+ln -s /opt/tools/ping-sweep/ping-sweep.py ping-sweep
+
+
+chown -R "$user:$user" /opt/tools
+
+apt upgrade
