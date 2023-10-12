@@ -88,7 +88,9 @@ log "Changing keyboard layout to es"
 setxkbmap es
 
 log "Configuring shortcuts"
-xfconf-query -c xfce4-keyboard-shortcuts -p '/commands/custom/<Primary><Alt>t' -t string -s '/usr/bin/xfce4-terminal'
+sudo -u "$user" xfconf-query -c xfce4-keyboard-shortcuts -p '/commands/custom/<Primary><Alt>t' -t string -s '/usr/bin/xfce4-terminal'
+sudo -u "$user" xfconf-query -c xfce4-keyboard-shortcuts -p '/commands/custom/<Primary><Alt>t' -t string -s '/usr/bin/xfce4-terminal'
+
 xfconf-query -c xfce4-keyboard-shortcuts -p '/commands/custom/<Super><Shift>s' -t string -s '/usr/bin/flameshot gui'
 
 log "downloading tools"
