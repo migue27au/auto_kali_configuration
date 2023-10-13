@@ -129,9 +129,11 @@ make clean && make -j
 make install
 
 cd /opt/tools
-git clone https://github.com/ropnop/kerbrute
+mkdir kerbrute
 cd kerbrute
-go get github.com/ropnop/kerbrute
+wget https://github.com/ropnop/kerbrute/releases/download/v1.0.3/kerbrute_linux_amd64
+mv kerbrute_linux_amd64 kerbrute
+ln -s /opt/tools/kerbrute/kerbrute_linux_amd64 /usr/bin/kerbrute
 
 chown -R "$user:$user" /opt/tools
 apt upgrade -y 
