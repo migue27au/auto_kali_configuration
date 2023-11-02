@@ -116,6 +116,7 @@ chmod +x /opt/tools/ping-sweep/ping-sweep
 
 ln -s /opt/tools/nmap-info/nmap-info.py /usr/bin/nmap-info
 ln -s /opt/tools/ping-sweep/ping-sweep /usr/bin/ping-sweep
+ln -s /opt/tools/toolbar_tools/target.sh /usr/bin/target
 
 cd /opt/tools
 
