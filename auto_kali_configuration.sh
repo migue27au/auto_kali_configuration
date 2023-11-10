@@ -38,7 +38,7 @@ echo "deb [arch=amd64] https://download.docker.com/linux/debian bullseye stable"
 
 apt update
 
-apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser golang xfce4-genmon-plugin gimp vlc audacity bat docker-ce docker-ce-cli containerd.io bettercap hostapd mdk4 asleap isc-dhcp-server hostapd-wpe hcxdumptool hcxtools beef-xss lighttpd openvpn-systemd-resolved
+apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser golang xfce4-genmon-plugin gimp vlc audacity bat docker-ce docker-ce-cli docker-compose containerd.io bettercap hostapd mdk4 asleap isc-dhcp-server hostapd-wpe hcxdumptool hcxtools beef-xss lighttpd openvpn-systemd-resolved
 
 
 user=$(ls /home)
@@ -61,8 +61,8 @@ log "enabling ssh service"
 systemctl start ssh
 
 log "Setting wallpaper..."
-sudo -u "$user" sshpass -p "$password" ssh kali@localhost -o StrictHostKeyChecking=no -x "xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/$user/Pictures/wallpaper.jpg"
-sshpass -p "$password" ssh kali@localhost -o StrictHostKeyChecking=no -x "xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/$user/Pictures/wallpaper.jpg"
+sudo -u "$user" sshpass -p "$password" ssh "$user@localhost" -o StrictHostKeyChecking=no -x "xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/$user/Pictures/wallpaper.jpg"
+sshpass -p "$password" ssh "$user@localhost" -o StrictHostKeyChecking=no -x "xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitorVirtual1/workspace0/last-image -s /home/$user/Pictures/wallpaper.jpg"
 
 log "disabling ssh service"
 sudo systemctl stop ssh
