@@ -138,3 +138,4 @@ ln -s /opt/tools/kerbrute/kerbrute_linux_amd64 /usr/bin/kerbrute
 
 chown -R "$user:$user" /opt/tools
 apt upgrade -y 
+apt dist-upgrade -y 
