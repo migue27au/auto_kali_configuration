@@ -24,21 +24,29 @@ fi
 
 log "APT UPDATE"
 
+#Chrome
 wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
 
+#Sublime
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 
+#Brave
 curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"| tee /etc/apt/sources.list.d/brave-browser-release.list
 
+#Docker
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/docker-archive-keyring.gpg
 echo "deb [arch=amd64] https://download.docker.com/linux/debian bullseye stable" | tee  /etc/apt/sources.list.d/docker.list
 
+#Spotify
+curl -sS https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+
 apt update
 
-apt install -y dbus-x11 sshpass google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser golang xfce4-genmon-plugin gimp vlc audacity bat docker-ce docker-ce-cli docker-compose containerd.io bettercap hostapd mdk4 asleap isc-dhcp-server hostapd-wpe hcxdumptool hcxtools beef-xss lighttpd openvpn-systemd-resolved libreoffice seclists
+apt install -y dbus-x11 sshpass spotify-client google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser golang xfce4-genmon-plugin gimp vlc audacity bat docker-ce docker-ce-cli docker-compose containerd.io bettercap hostapd mdk4 asleap isc-dhcp-server hostapd-wpe hcxdumptool hcxtools beef-xss lighttpd openvpn-systemd-resolved libreoffice seclists
 apt remove modemmanager -y
 
 user=$(ls /home)
