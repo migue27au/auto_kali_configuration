@@ -46,17 +46,16 @@ echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sou
 
 apt update
 
-apt install -y adb dbus-x11 sshpass spotify-client google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser golang xfce4-genmon-plugin gimp vlc audacity bat docker-ce docker-ce-cli docker-compose containerd.io bettercap hostapd mdk4 asleap isc-dhcp-server hostapd-wpe hcxdumptool hcxtools beef-xss lighttpd openvpn-systemd-resolved libreoffice seclists
+apt install -y xfce4-terminal sshpass adb dbus-x11 sshpass spotify-client google-chrome-stable sublime-text dirmngr gnupg xfce4-terminal snapd tldr flameshot bloodhound keepass2 brave-browser golang xfce4-genmon-plugin gimp vlc audacity bat docker-ce docker-ce-cli docker-compose containerd.io bettercap hostapd mdk4 asleap isc-dhcp-server hostapd-wpe hcxdumptool hcxtools beef-xss lighttpd openvpn-systemd-resolved libreoffice seclists
 apt remove modemmanager -y
 
 user=$(ls /home)
 
 log "Detected user: $user"
 
+sudo groupadd docker
 usermod -aG docker $user
-newgrp docker << TEST
-echo "new group docker created"
-TEST
+newgrp docker
 
 cd "/home/$user/Pictures"
 
